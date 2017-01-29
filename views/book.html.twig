@@ -1,0 +1,52 @@
+{% set books_active = 1 %}
+{% extends 'layout.html.twig' %}
+
+{% block contents %}
+    {% if book %}
+        <div class="row book-card">
+            <div class="col-xs-12">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <img src="{{ app.request.basepath }}/uploads/{{ book.image }}_small.jpg"/>
+                    </div>
+                    <div class="col-sm-8">
+                        <h4>{{ book.titre }}</h4>
+                        <p>{{ book.synopsis }}</p>
+                        <span><i>Ecrit par {{ book.auteur }}</i> | Nombre d'exemplaires disponibles: {{ exemplaires|length - book.borrowed }}</span>
+                        <br><br>
+                        {% if exemplaires|length > 0 %}
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>Identifiant</th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for exemp in exemplaires %}
+                                    <tr>
+                                        <th scope="row" class="{% if exemp.nodispo > 0 %}alert-danger{% endif %}">#{{ exemp.id }}</th>
+                                        <td></td>
+                                        <td></td>
+                                        <td>
+                                            {% if exemp.nodispo == 0 %}
+                                                <a href="{{ path('borrow', {id : exemp.id}) }}">Emprunter</a>
+                                            {% else %}
+                                                {% if app.session.get('admin') %}
+                                                    <a href="{{ path('unborrow', {id: exemp.id}) }}">Retour</a>
+                                                {% endif %}
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

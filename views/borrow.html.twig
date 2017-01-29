@@ -1,0 +1,21 @@
+{% set books_active = 1 %}
+{% extends 'layout.html.twig' %}
+
+{% block contents %}
+    {% if success is defined %}
+        {% if not success %}
+            <div class="alert alert-danger loginsuccess">
+                Mauvaise date entrée, le format est : jj/mm/aaaa
+            </div>
+        {% endif %}
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data">
+        <strong>Nom de l'emprunteur:</strong><br/>
+        <input class="form-control" type="text" name="name" required/>
+        <strong>Date de fin d'emprunt:</strong><br/>
+        <input class="form-control" type="date" name="fin" placeholder="jj/mm/aaaa"/>
+        <br/>
+        <input class="btn btn-success" type="submit" value="Enregistrer"/>
+    </form>
+{% endblock %}
